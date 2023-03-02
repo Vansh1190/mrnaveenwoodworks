@@ -1,0 +1,19 @@
+{
+  "files": {
+    "main.css": "/mrnaveenwoodworks/static/css/main.1ad41796.css",
+    "main.js": "/mrnaveenwoodworks/static/js/main.e6af014b.js",
+    "static/js/787.5975dda2.chunk.js": "/mrnaveenwoodworks/static/js/787.5975dda2.chunk.js",
+    "static/media/videoplayback.mp4": "/mrnaveenwoodworks/static/media/videoplayback.3013a7617e1b29430feb.mp4",
+    "static/media/whatsapp.png": "/mrnaveenwoodworks/static/media/whatsapp.1dd8ca2765f1f177ab22.png",
+    "static/media/india.png": "/mrnaveenwoodworks/static/media/india.58a52d02fea50bfe2c3a.png",
+    "static/media/gmail.png": "/mrnaveenwoodworks/static/media/gmail.a2f2146f929409405da0.png",
+    "index.html": "/mrnaveenwoodworks/index.html",
+    "main.1ad41796.css.map": "/mrnaveenwoodworks/static/css/main.1ad41796.css.map",
+    "main.e6af014b.js.map": "/mrnaveenwoodworks/static/js/main.e6af014b.js.map",
+    "787.5975dda2.chunk.js.map": "/mrnaveenwoodworks/static/js/787.5975dda2.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.1ad41796.css",
+    "static/js/main.e6af014b.js"
+  ]
+}
