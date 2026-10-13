@@ -21,6 +21,12 @@ Bespoke interiors and joinery studio site — a single-page static build with a 
   It lazy-loads three.js only when the section scrolls into view, clamps DPR to 1.75,
   pauses offscreen, and falls back to a photo sequence without WebGL or with
   `prefers-reduced-motion`.
+- Brand kit comes from the official logo badge (assets/logo.png): deep green #16281f /
+  #2f4a3c, sage #8fa886, khaki gold #cfc38f, cream #efe7da. Palette lives in the CSS
+  custom properties at the top of assets/revamp.css.
 - Project photography is placeholder stock; replace files in `assets/img/` and the
-  `<img>`/`photoFrame()` references before launch.
+  `<img>`/`photoFrame()` references when real site photos arrive.
+- Facts synced from the old Vercel site: established 2002, Punjab-based, 95% of clients
+  recommend, service list (Italian & modular kitchens, luxury bedrooms, LCD/LED panels,
+  doors & windows, down ceilings, interior design, storage solutions).
 - Deploys to GitHub Pages from `main` at https://vansh1190.github.io/mrnaveenwoodworks/

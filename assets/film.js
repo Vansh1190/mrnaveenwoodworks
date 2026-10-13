@@ -149,8 +149,8 @@ export async function initFilm({ reduce, THREE } = {}) {
   const darkStoneTex = tex(makeCanvas((x, s) => speckleCanvas(x, s, '#2e2b27', 0.1)));
 
   const scene = new THREE.Scene();
-  scene.background = new THREE.Color('#0a0908');
-  scene.fog = new THREE.Fog('#0d0b09', 6, 26);
+  scene.background = new THREE.Color('#08100c');
+  scene.fog = new THREE.Fog('#0a120e', 6, 26);
 
   const camera = new THREE.PerspectiveCamera(55, 16 / 10, 0.1, 60);
   const curve = (pts) => new THREE.CatmullRomCurve3(pts.map((p) => new THREE.Vector3(...p)), false, 'catmullrom', 0.35);
@@ -165,13 +165,13 @@ export async function initFilm({ reduce, THREE } = {}) {
   const M = {
     floor: std({ map: floorMap, roughness: 0.55 }),
     wall: std({ map: wallTex, roughness: 0.95, color: 0xffffff }),
-    wallDark: std({ map: wallTex, color: 0x3a3129, roughness: 0.9 }),
+    wallDark: std({ map: wallTex, color: 0x24352c, roughness: 0.9 }),
     oak: std({ map: woodTex(0), roughness: 0.62 }),
     walnut: std({ map: woodTex(1), roughness: 0.6 }),
     stone: std({ map: stoneTex, roughness: 0.3, metalness: 0.05 }),
     dark: std({ map: darkStoneTex, roughness: 0.3 }),
     linen: std({ color: 0xd8cdb9, roughness: 1 }),
-    brass: std({ color: 0xc8a15c, roughness: 0.35, metalness: 0.7 }),
+    brass: std({ color: 0xcfc38f, roughness: 0.35, metalness: 0.7 }),
     glow: basic({ color: 0xffd9a3 }),
     day: basic({ color: 0xcfe0ff }),
   };
@@ -315,7 +315,7 @@ export async function initFilm({ reduce, THREE } = {}) {
   addMesh(M.stone, 0.5, 0.42, 0.5, HW - 0.45, 0.21, 14.2);
   addMesh(M.day, 0.03, 1.5, 1.9, HW - 0.05, 1.75, 17.2);
 
-  scene.add(new THREE.HemisphereLight(0xb9c6da, 0x42301f, 0.6));
+  scene.add(new THREE.HemisphereLight(0xbfd0c6, 0x3a3520, 0.62));
   const point = (color, i, x, y, z, dist) => {
     const l = new THREE.PointLight(color, i, dist, 2);
     l.position.set(x, y, z);
