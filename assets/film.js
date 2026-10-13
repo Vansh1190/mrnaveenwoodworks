@@ -5,9 +5,9 @@ export const __test = { three: null };
 
 const BEATS = [
   { from: 0, to: 0.24 },
-  { from: 0.24, to: 0.5 },
-  { from: 0.5, to: 0.76 },
-  { from: 0.76, to: 1 },
+  { from: 0.24, to: 0.42 },
+  { from: 0.42, to: 0.65 },
+  { from: 0.65, to: 1 },
 ];
 
 /* Eye-height dolly down the plan: approach -> lobby -> kitchen -> bedroom. */
@@ -204,8 +204,7 @@ export async function initFilm({ reduce, THREE } = {}) {
     f.receiveShadow = true;
     return f;
   };
-  const doorway = (z) => {
-    const gap = 1.5;
+  const doorway = (z, gap = 2.1) => {
     const side = (HW * 2 + 0.3 - gap) / 2;
     wall(side, CEIL, 0.14, -(gap + side) / 2, CEIL / 2, z);
     wall(side, CEIL, 0.14, (gap + side) / 2, CEIL / 2, z);
@@ -260,7 +259,6 @@ export async function initFilm({ reduce, THREE } = {}) {
   sideWalls(lob0, lob1, M.wall);
   ceiling(lob0, lob1);
   cove(lob0 + 0.4); cove(lob1 - 0.4);
-  wall(HW * 2 + 0.3, CEIL, 0.14, 0, CEIL / 2, lob0);
   doorway(lob1);
   panelRun(-HW + 0.12, 0.7, 5.5, 6);
   framed('./img/living-2.jpg', 1.75, 1.2, -HW + 0.2, 1.62, 3.1, Math.PI / 2);

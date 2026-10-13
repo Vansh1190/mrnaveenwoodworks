@@ -193,7 +193,8 @@ if (heroVideo) {
     const play = () => {
       if (heroVideo.getAttribute('src')) return;
       heroVideo.setAttribute('src', src);
-      heroVideo.play().catch(() => {});
+      const played = heroVideo.play();
+      if (played && typeof played.catch === 'function') played.catch(() => {});
     };
     if ('IntersectionObserver' in window) {
       const vio = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) { play(); vio.disconnect(); } }), { rootMargin: '20% 0px' });
