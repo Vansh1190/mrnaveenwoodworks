@@ -1,0 +1,15 @@
+[
+  {
+    "date": "2026-10-13",
+    "macrostructure": "Photographic",
+    "theme": "dark editorial (green-gold)",
+    "enrichment": "none \u2014 typography + photography",
+    "brief": "Mr. Naveen Wood Works \u00b7 full-site redesign \u00b7 nav N6 masthead \u00b7 footer Ft4 colophon",
+    "scope": "app",
+    "design_system": "design.md",
+    "routes": [
+      "index.html",
+      "gallery.html"
+    ]
+  }
+]

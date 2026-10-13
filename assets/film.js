@@ -76,6 +76,8 @@ export async function initFilm({ reduce, THREE } = {}) {
   const railFill = section.querySelector('.film__railfill');
   const hint = section.querySelector('.film__hint');
 
+  let target = 0;
+  let shown = 0;
   window.__filmScroll = (v) => { target = clamp(v, 0, 1); };
 
   const syncUI = (e) => {
@@ -335,8 +337,6 @@ export async function initFilm({ reduce, THREE } = {}) {
     scene.add(sun, sun.target);
   }
 
-  let target = 0;
-  let shown = 0;
   let beat = -1;
   let visible = true;
   let raf = 0;

@@ -1,31 +1,45 @@
-/* gallery: category filter + lightbox (shares revamp.js scroll/reveal engine) */
-const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+/* Hallmark · designed-as-app · design-system: design.md
+   Gallery plate grid: category filter + lightbox. No scroll reveals — plates are just there. */
 
 const grid = document.querySelector('[data-gallery-grid]');
-const shots = grid ? [...grid.querySelectorAll('.shot')] : [];
+const plates = grid ? [...grid.querySelectorAll('.plate-item')] : [];
 const countEl = document.querySelector('[data-gallery-count]');
 const emptyEl = document.querySelector('[data-gallery-empty]');
 const filters = document.querySelector('[data-gallery-filters]');
 
+const catLabel = (cat) => {
+  const btn = filters && filters.querySelector(`[data-filter="${cat}"]`);
+  return btn ? btn.textContent.trim() : cat;
+};
+
+/* plate numbers reflect current visible order */
+const renumber = () => {
+  plates.filter((el) => !el.classList.contains('is-hidden'))
+    .forEach((el, i) => {
+      const no = el.querySelector('.plate-item__no');
+      if (no) no.textContent = `Plate ${String(i + 1).padStart(2, '0')}`;
+    });
+};
+
 const setWide = () => {
-  shots.forEach((el) => el.classList.remove('shot--wide'));
-  const visible = shots.filter((el) => !el.classList.contains('is-hidden'));
+  plates.forEach((el) => el.classList.remove('plate-item--wide'));
+  const visible = plates.filter((el) => !el.classList.contains('is-hidden'));
   visible.forEach((el, i) => {
     if (el.dataset.cat.split(' ').length > 1) return;
-    if (i % 5 === 0) el.classList.add('shot--wide');
+    if (i % 5 === 0) el.classList.add('plate-item--wide');
   });
 };
 
 const applyFilter = (cat) => {
-  shots.forEach((el) => {
+  plates.forEach((el) => {
     const on = cat === 'all' || el.dataset.cat.split(' ').includes(cat);
     el.classList.toggle('is-hidden', !on);
   });
-  const shown = shots.filter((el) => !el.classList.contains('is-hidden'));
+  const shown = plates.filter((el) => !el.classList.contains('is-hidden'));
   if (countEl) countEl.textContent = shown.length;
   if (emptyEl) emptyEl.hidden = shown.length > 0;
   setWide();
-  shots.forEach((el) => el.classList.add('is-in'));
+  renumber();
 };
 
 if (filters) {
@@ -39,26 +53,20 @@ if (filters) {
     });
     applyFilter(btn.dataset.filter);
   });
-}
 
-/* stagger-in the grid as it scrolls into view */
-if (grid && 'IntersectionObserver' in window && !reduce) {
-  const io = new IntersectionObserver(
-    (entries) => entries.forEach((entry) => {
-      if (!entry.isIntersecting) return;
-      const i = shots.indexOf(entry.target);
-      entry.target.style.transitionDelay = `${(i % 4) * 90}ms`;
-      entry.target.classList.add('is-in');
-      io.unobserve(entry.target);
-    }),
-    { rootMargin: '0px 0px -8% 0px', threshold: 0.1 }
-  );
-  shots.forEach((s) => io.observe(s));
-} else {
-  shots.forEach((s) => s.classList.add('is-in'));
+  /* deep link: gallery.html#kitchen etc. */
+  const fromHash = plates.length && filters.querySelector(`[data-filter="${location.hash.slice(1)}"]`);
+  if (fromHash) {
+    filters.querySelectorAll('[data-filter]').forEach((b) => {
+      const on = b === fromHash;
+      b.classList.toggle('is-on', on);
+      b.setAttribute('aria-pressed', String(on));
+    });
+    applyFilter(fromHash.dataset.filter);
+  } else {
+    applyFilter('all');
+  }
 }
-setWide();
-if (countEl) countEl.textContent = shots.length;
 
 /* ---------- lightbox ---------- */
 const box = document.createElement('div');
@@ -68,8 +76,8 @@ box.setAttribute('aria-modal', 'true');
 box.setAttribute('aria-label', 'Photo viewer');
 box.innerHTML = `
   <div class="lightbox__top">
-    <span class="lightbox__count"><b data-lb-index>1</b> / <span data-lb-total>${shots.length}</span></span>
-    <button class="round" data-lb-close aria-label="Close photo viewer">✕</button>
+    <span class="lightbox__count"><b data-lb-index>1</b> / <span data-lb-total>${plates.length}</span></span>
+    <button class="sqbtn" data-lb-close aria-label="Close photo viewer">✕</button>
   </div>
   <div class="lightbox__stage"><img alt="" data-lb-img /></div>
   <div class="lightbox__foot">
@@ -78,33 +86,35 @@ box.innerHTML = `
       <span class="lightbox__caption" data-lb-caption></span>
     </div>
     <div class="lightbox__nav">
-      <button class="round" data-lb-prev aria-label="Previous photo">←</button>
-      <button class="round" data-lb-next aria-label="Next photo">→</button>
+      <button class="sqbtn" data-lb-prev aria-label="Previous photo">←</button>
+      <button class="sqbtn" data-lb-next aria-label="Next photo">→</button>
     </div>
   </div>`;
 document.body.appendChild(box);
 
 const img = box.querySelector('[data-lb-img]');
 const idxEl = box.querySelector('[data-lb-index]');
+const totalEl = box.querySelector('[data-lb-total]');
 const capEl = box.querySelector('[data-lb-caption]');
 const tagEl = box.querySelector('[data-lb-tag]');
 let pos = 0;
 let opener = null;
 
-const visible = () => shots.filter((el) => !el.classList.contains('is-hidden'));
+const visible = () => plates.filter((el) => !el.classList.contains('is-hidden'));
 
 const render = () => {
   const list = visible();
-  const shot = list[pos];
-  if (!shot) return;
-  const src = shot.querySelector('img');
+  const plate = list[pos];
+  if (!plate) return;
+  const src = plate.querySelector('img');
   img.src = src.getAttribute('src');
   img.alt = src.getAttribute('alt');
   img.style.visibility = 'hidden';
   img.onload = () => { img.style.visibility = 'visible'; };
-  capEl.textContent = shot.querySelector('.shot__name').textContent;
-  tagEl.textContent = shot.querySelector('.shot__cat').textContent;
+  capEl.textContent = plate.dataset.name || '';
+  tagEl.textContent = plate.dataset.cat.split(' ').map(catLabel).join(' · ');
   idxEl.textContent = pos + 1;
+  totalEl.textContent = list.length;
 };
 
 const open = (i) => {
@@ -125,7 +135,7 @@ const close = () => {
 
 const step = (d) => { pos = (pos + d + visible().length) % visible().length; render(); };
 
-shots.forEach((el) => {
+plates.forEach((el) => {
   el.addEventListener('click', () => open(visible().indexOf(el)));
   el.addEventListener('keydown', (e) => {
     if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(visible().indexOf(el)); }
@@ -146,7 +156,7 @@ addEventListener('keydown', (e) => {
   else if (e.key === 'ArrowLeft') step(-1);
 });
 
-/* swipe between photos on touch */
+/* swipe between plates on touch */
 let sx = 0;
 box.addEventListener('touchstart', (e) => { sx = e.touches[0].clientX; }, { passive: true });
 box.addEventListener('touchend', (e) => {
