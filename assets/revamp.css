@@ -323,7 +323,7 @@ table { border-collapse: collapse; width: 100%; }
 .film__sizer { height: 300vh; height: 300svh; pointer-events: none; }
 .film__canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
 .film__stage {
-  position: relative; width: min(1320px, 100%); margin-inline: auto;
+  position: relative; z-index: var(--z-raised); width: min(1320px, 100%); margin-inline: auto;
   padding: 0 var(--page-gutter) clamp(4rem, 10vh, 7rem); min-height: 74svh;
   display: flex; flex-direction: column; justify-content: flex-end;
 }
@@ -345,16 +345,16 @@ table { border-collapse: collapse; width: 100%; }
 .film__fallback { position: relative; }
 .film__fallback img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity var(--dur-long) var(--ease-out); }
 .film__fallback img.is-on { opacity: 1; }
-.film.is-fallback .film__pin { height: 100svh; }
-.film.is-fallback .film__fallback img { position: absolute; }
 .film.is-reduced .film__pin { position: static; }
 .film.is-reduced .film__sizer { display: none; }
 .film.is-reduced .film__canvas { display: none; }
 .film.is-reduced .film__fallback { position: static; display: grid; gap: var(--space-md); padding: var(--space-xl) var(--page-gutter) var(--space-2xl); }
-.film.is-reduced .film__fallback img { position: static; opacity: 1; aspect-ratio: 4 / 3; }
+.film.is-reduced .film__fallback img { position: static; opacity: 1; aspect-ratio: 16 / 10; }
+.film.is-reduced .film__stage { min-height: 0; padding-top: var(--space-2xl); }
 .film.is-reduced .film__beats { min-height: 0; display: grid; gap: var(--space-xl); }
 .film.is-reduced .film__beat { position: static; opacity: 1; transform: none; }
 .film.is-reduced .film__rail, .film.is-reduced .film__hint { display: none; }
+
 
 /* ---------- gallery: index head, plates, filters, lightbox ---------- */
 .gal-head { padding-block: var(--space-3xl) var(--space-xl); }
@@ -451,3 +451,19 @@ table { border-collapse: collapse; width: 100%; }
   }
   .entrance { opacity: 1; transform: none; animation: none; }
 }
+
+/* ---------- shared spacing utilities (tokens only) ---------- */
+.mt-xs { margin-top: var(--space-xs); } .mt-md { margin-top: var(--space-md); } .mt-lg { margin-top: var(--space-lg); }
+
+/* ---------- contact ---------- */
+.contact { border-top: var(--rule-hair) solid var(--color-rule); }
+.contact__rows { display: grid; gap: var(--space-lg); align-content: center; }
+.contact__row { display: grid; gap: var(--space-2xs); border-bottom: var(--rule-hair) solid var(--color-rule); padding-block: var(--space-sm) var(--space-md); }
+.contact__row .tlink { font-size: clamp(1.25rem, 2.2vw, 1.9rem); }
+.contact__meta { margin-top: var(--space-2xl); border-top: var(--rule-hair) solid var(--color-rule); display: grid; gap: 0; }
+.contact__meta p { display: flex; flex-wrap: wrap; align-items: baseline; gap: var(--space-md); padding-block: var(--space-sm); border-bottom: var(--rule-hair) solid var(--color-rule); color: var(--color-muted); }
+.contact__meta .label { width: 10ch; flex: none; }
+@media (max-width: 40rem) { .contact__meta .label { width: auto; } }
+
+/* ---------- how-we-build story (scene bg is set in build.js; chrome inherited) ---------- */
+.film--build .film__pin { background: var(--color-paper-2); }

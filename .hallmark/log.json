@@ -3,13 +3,20 @@
     "date": "2026-10-13",
     "macrostructure": "Photographic",
     "theme": "dark editorial (green-gold)",
-    "enrichment": "none \u2014 typography + photography",
-    "brief": "Mr. Naveen Wood Works \u00b7 full-site redesign \u00b7 nav N6 masthead \u00b7 footer Ft4 colophon",
+    "enrichment": "none — typography + photography",
+    "brief": "Mr. Naveen Wood Works · full-site redesign · nav N6 masthead · footer Ft4 colophon",
     "scope": "app",
     "design_system": "design.md",
     "routes": [
       "index.html",
       "gallery.html"
     ]
+  },
+  {
+    "date": "2026-10-13",
+    "scope": "app",
+    "action": "redesign-extension",
+    "summary": "Added #build 'How we build' scroll-driven 3D story (assets/build.js, 5-station object choreography: plan draws / saw cuts / panels rise / drawers+doors fit / lights on) and a real #contact section before the colophon; design.md amended to allow the second scroll-linked 3D exception; fallback unified to is-reduced static photo stack; revamp.js refactored to wireScrollFilm for both sections.",
+    "system": "unchanged tokens; new sections reuse editorial/photographic system"
   }
 ]

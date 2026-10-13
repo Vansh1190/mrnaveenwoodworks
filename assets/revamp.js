@@ -53,7 +53,6 @@ const bar = document.querySelector('.progress__bar');
 let target = 0;
 let y = 0;
 let maxScroll = 1;
-let filmScrollCb = null;
 
 const measure = () => {
   const doc = document.documentElement;
@@ -68,6 +67,7 @@ const frame = () => {
   if (mast) mast.classList.toggle('is-small', target > 80 && !menuOpen);
 
   if (filmScrollCb) filmScrollCb();
+  if (buildScrollCb) buildScrollCb();
   requestAnimationFrame(frame);
 };
 
@@ -102,9 +102,12 @@ if (heroVideo) {
   }
 }
 
-/* ---------- walkthrough film (the one scroll-linked motion) ---------- */
-const film = document.querySelector('#film');
-if (film) {
+/* ---------- scroll-linked 3D sections (the two sanctioned exceptions) ---------- */
+let filmScrollCb = null;
+let buildScrollCb = null;
+
+const wireScrollFilm = (film, initFn, setCb) => {
+  if (!film) return;
   const pin = film.querySelector('.film__pin');
   const sizer = film.querySelector('.film__sizer');
   let top = 0;
@@ -127,58 +130,65 @@ if (film) {
   };
 
   const push = () => {
-    if (!window.__filmScroll) return;
-    window.__filmScroll(clamp((scrollY + innerHeight / 2 - top) / span, 0, 1));
+    const feed = film === document.getElementById('film') ? window.__filmScroll : window.__buildScroll;
+    if (!feed) return;
+    feed(clamp((scrollY + innerHeight / 2 - top) / span, 0, 1));
   };
 
   if (reduce) {
     film.classList.add('is-reduced');
-    import('./film.js').then((m) => m.initFilm({ reduce: true })).catch(() => {});
-  } else {
-    const setup = () => { measureFilm(); push(); };
-    let started = false;
-    const start = () => {
-      if (started) return;
-      started = true;
-      import('./film.js')
-        .then((m) => m.initFilm({ reduce: false }))
-        .then(push)
-        .catch(() => {
-          film.classList.add('is-fallback');
-          const c = film.querySelector('.film__canvas');
-          if (c) c.remove();
-          const fb = film.querySelector('.film__fallback');
-          if (fb) fb.hidden = false;
-          push();
-        });
-    };
-    if ('IntersectionObserver' in window) {
-      const io = new IntersectionObserver(
-        (es) => es.forEach((en) => {
-          if (!en.isIntersecting) return;
-          start();
-          io.disconnect();
-        }),
-        { rootMargin: '40% 0px' }
-      );
-      io.observe(film);
-    } else {
-      start();
-    }
-    setup();
-    filmScrollCb = push;
-    addEventListener('resize', setup);
-    addEventListener('load', setup);
-    if ('ResizeObserver' in window) {
-      let queued = false;
-      new ResizeObserver(() => {
-        if (queued) return;
-        queued = true;
-        requestAnimationFrame(() => { queued = false; setup(); });
-      }).observe(film);
-    }
+    initFn({ reduce: true }).catch(() => {});
+    return;
   }
-}
+
+  const setup = () => { measureFilm(); push(); };
+  let started = false;
+  const start = () => {
+    if (started) return;
+    started = true;
+    initFn({ reduce: false })
+      .then(push)
+      .catch(() => {
+        film.classList.add('is-reduced');
+        const c = film.querySelector('.film__canvas');
+        if (c) c.remove();
+        const fb = film.querySelector('.film__fallback');
+        if (fb) fb.hidden = false;
+        push();
+      });
+  };
+  if ('IntersectionObserver' in window) {
+    const io = new IntersectionObserver(
+      (es) => es.forEach((en) => {
+        if (!en.isIntersecting) return;
+        start();
+        io.disconnect();
+      }),
+      { rootMargin: '40% 0px' }
+    );
+    io.observe(film);
+  } else {
+    start();
+  }
+  setup();
+  setCb(push);
+  addEventListener('resize', setup);
+  addEventListener('load', setup);
+  if ('ResizeObserver' in window) {
+    let queued = false;
+    new ResizeObserver(() => {
+      if (queued) return;
+      queued = true;
+      requestAnimationFrame(() => { queued = false; setup(); });
+    }).observe(film);
+  }
+};
+
+const importFilm = () => import('./film.js').then((m) => m.initFilm);
+const importBuild = () => import('./build.js').then((m) => m.initBuild);
+
+wireScrollFilm(document.querySelector('#film'), (o) => importFilm().then((fn) => fn(o)), (cb) => { filmScrollCb = cb; });
+wireScrollFilm(document.querySelector('#build'), (o) => importBuild().then((fn) => fn(o)), (cb) => { buildScrollCb = cb; });
 
 /* ---------- year ---------- */
 document.querySelectorAll('[data-year]').forEach((el) => {

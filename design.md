@@ -61,6 +61,15 @@ never identical padding on every section.
   Durations: 120 / 220 / 420 ms tokens.
 - The 3D walkthrough scroll-scrub is the one scroll-linked exception (it is the
   product); it keeps its reduced-motion photo fallback.
+- 2026-10-13 amendment: a second scroll-linked 3D section is allowed —
+  “How we build” (`assets/build.js`, `.film--build`), object-choreography style
+  (plan draws, saw cuts, panels rise, doors close, lights come on). Same rules as
+  the walkthrough: photo fallback for no-WebGL / reduced motion, one rail, no
+  audio, no autoplay loop. Sections reusing `.film` chrome MUST keep pin+sizer
+  siblings and `window.__buildScroll` fed from revamp.js.
+- Contact is a real section (`#contact`) above the colophon — typographic link
+  stack (WhatsApp / call / email) + meta list; the colophon stays as the page
+  close, it is not the contact target.
 - Reduced motion: opacity-only, ≤ 150 ms. Focus rings instant, never transitioned.
 
 ## Component voice

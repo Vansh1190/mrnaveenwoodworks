@@ -93,7 +93,7 @@ export async function initFilm({ reduce, THREE } = {}) {
   };
 
   const fallbackMode = () => {
-    section.classList.add('is-fallback');
+    section.classList.add('is-reduced');
     if (canvas) canvas.remove();
     if (fallback) fallback.hidden = false;
     syncUI(0);
