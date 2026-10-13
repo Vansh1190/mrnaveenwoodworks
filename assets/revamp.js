@@ -102,6 +102,7 @@ const hero = document.querySelector('.hero');
 const nav = document.querySelector('.nav');
 const video = document.querySelector('.hero__video');
 
+let filmScrollCb = null;
 let target = 0;
 let y = 0;
 let last = 0;
@@ -141,6 +142,8 @@ const frame = () => {
     }
   }
 
+  if (filmScrollCb) filmScrollCb();
+
   if (nav) {
     nav.classList.toggle('is-stuck', target > 40);
     nav.classList.toggle('is-hidden', target > innerHeight * 1.2 && velocity > 2 && !menuOpen);
@@ -174,6 +177,110 @@ addEventListener('resize', () => { maxScroll = measure(); }, { passive: true });
 addEventListener('load', () => { maxScroll = measure(); });
 maxScroll = measure();
 requestAnimationFrame(frame);
+
+/* ---------- hero video: poster-first on touch, load in view ---------- */
+const heroVideo = document.querySelector('.hero__video');
+if (heroVideo) {
+  const src = heroVideo.getAttribute('src');
+  const heavy = matchMedia('(pointer: coarse)').matches || navigator.connection?.saveData;
+  if (heavy) {
+    heroVideo.removeAttribute('src');
+    heroVideo.removeAttribute('autoplay');
+    heroVideo.removeAttribute('loop');
+    heroVideo.setAttribute('poster', './assets/img/detail-1.jpg');
+  } else {
+    heroVideo.removeAttribute('src');
+    const play = () => {
+      if (heroVideo.getAttribute('src')) return;
+      heroVideo.setAttribute('src', src);
+      heroVideo.play().catch(() => {});
+    };
+    if ('IntersectionObserver' in window) {
+      const vio = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) { play(); vio.disconnect(); } }), { rootMargin: '20% 0px' });
+      vio.observe(heroVideo);
+    } else {
+      play();
+    }
+  }
+}
+
+/* ---------- walkthrough film ---------- */
+const film = document.querySelector('#film');
+if (film) {
+  const pin = film.querySelector('.film__pin');
+  const sizer = film.querySelector('.film__sizer');
+  let top = 0;
+  let span = 1;
+
+  const measure = () => {
+    pin.style.height = '';
+    sizer.style.height = '';
+    const vh = innerHeight;
+    const content = pin.offsetHeight || vh;
+    if (content <= vh) {
+      pin.style.height = `${vh}px`;
+      sizer.style.height = `${Math.round(vh * 3)}px`;
+    } else {
+      pin.style.height = `${content}px`;
+      sizer.style.height = `${Math.round(vh * 3 + (content - vh))}px`;
+    }
+    top = film.getBoundingClientRect().top + scrollY;
+    span = Math.max(1, film.offsetHeight - vh);
+  };
+
+  const push = () => {
+    if (!window.__filmScroll) return;
+    window.__filmScroll(clamp((scrollY + innerHeight / 2 - top) / span, 0, 1));
+  };
+
+  if (reduce) {
+    film.classList.add('is-reduced');
+    import('./film.js').then((m) => m.initFilm({ reduce: true })).catch(() => {});
+  } else {
+    const setup = () => { measure(); push(); };
+    let started = false;
+    const start = () => {
+      if (started) return;
+      started = true;
+      import('./film.js')
+        .then((m) => m.initFilm({ reduce: false }))
+        .then(push)
+        .catch(() => {
+          film.classList.add('is-fallback');
+          const c = film.querySelector('.film__canvas');
+          if (c) c.remove();
+          const fb = film.querySelector('.film__fallback');
+          if (fb) fb.hidden = false;
+          push();
+        });
+    };
+    if ('IntersectionObserver' in window) {
+      const io = new IntersectionObserver(
+        (es) => es.forEach((e) => {
+          if (!e.isIntersecting) return;
+          start();
+          io.disconnect();
+        }),
+        { rootMargin: '40% 0px' }
+      );
+      io.observe(film);
+    } else {
+      start();
+    }
+    setup();
+    filmScrollCb = push;
+    addEventListener('resize', setup);
+    addEventListener('load', setup);
+    if ('ResizeObserver' in window) {
+      let queued = false;
+      new ResizeObserver(() => {
+        if (queued) return;
+        queued = true;
+        requestAnimationFrame(() => { queued = false; setup(); });
+      }).observe(film);
+    }
+  }
+}
 
 /* ---------- magnetic ---------- */
 if (fine && !reduce) {
@@ -239,10 +346,30 @@ if (stage && 'IntersectionObserver' in window) {
   const pieces = [...track.querySelectorAll('.piece')];
   const current = document.querySelector('.work__current');
 
-  const step = () => pieces[0].getBoundingClientRect().width + 28;
-  const go = (dir) => stage.scrollBy({ left: dir * step(), behavior: reduce ? 'auto' : 'smooth' });
+  const gap = () => parseFloat(getComputedStyle(track).columnGap || getComputedStyle(track).gap) || 24;
+  const go = (dir) => stage.scrollBy({ left: dir * (pieces[0].getBoundingClientRect().width + gap()), behavior: reduce ? 'auto' : 'smooth' });
   document.querySelector('[data-work-next]').addEventListener('click', () => go(1));
   document.querySelector('[data-work-prev]').addEventListener('click', () => go(-1));
+
+  const revealIO = new IntersectionObserver(
+    (entries) => entries.forEach((entry) => {
+      if (!entry.isIntersecting) return;
+      entry.target.classList.add('is-in');
+      revealIO.unobserve(entry.target);
+    }),
+    { root: stage, threshold: 0.12 }
+  );
+  pieces.forEach((p) => revealIO.observe(p));
+
+  const indexIO = new IntersectionObserver(
+    (entries) => entries.forEach((entry) => {
+      if (!entry.isIntersecting || !current) return;
+      const i = pieces.indexOf(entry.target);
+      if (i > -1) current.textContent = String(i + 1).padStart(2, '0');
+    }),
+    { root: stage, rootMargin: '-45% 0px -45% 0px' }
+  );
+  pieces.forEach((p) => indexIO.observe(p));
 
   let down = false;
   let startX = 0;
@@ -261,22 +388,6 @@ if (stage && 'IntersectionObserver' in window) {
   addEventListener('pointermove', (e) => {
     if (!down) return;
     stage.scrollLeft = startScroll - (e.clientX - startX) * 1.2;
-  });
-
-  const io = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
-        if (!entry.isIntersecting) return;
-        entry.target.classList.add('is-in');
-        const i = pieces.indexOf(entry.target);
-        if (current && i > -1) current.textContent = String(i + 1).padStart(2, '0');
-      });
-    },
-    { root: stage, threshold: 0.5 }
-  );
-  pieces.forEach((p) => {
-    p.setAttribute('data-reveal', '');
-    io.observe(p);
   });
 }
 

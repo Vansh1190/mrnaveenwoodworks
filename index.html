@@ -9,7 +9,12 @@
   <meta property="og:title" content="Mr. Naveen Wood Works — Bespoke Interiors, Built in Wood" />
   <meta property="og:description" content="Modular kitchens, luxury bedrooms, Italian panels and hand-finished joinery." />
   <meta property="og:type" content="website" />
-  <link rel="icon" href="./favicon.ico" />
+  <meta property="og:url" content="https://vansh1190.github.io/mrnaveenwoodworks/" />
+  <meta property="og:image" content="https://vansh1190.github.io/mrnaveenwoodworks/assets/img/living-2.jpg" />
+  <meta property="og:image:width" content="1400" />
+  <meta property="og:image:height" content="952" />
+  <link rel="icon" href="./favicon.svg" type="image/svg+xml" />
+  <link rel="alternate icon" href="./favicon.ico" />
   <link rel="apple-touch-icon" href="./logo192.png" />
   <link rel="manifest" href="./manifest.json" />
   <link rel="preload" href="./assets/fonts/satoshi-400.woff2" as="font" type="font/woff2" crossorigin />
@@ -101,6 +106,57 @@
       </div>
     </section>
 
+    <section class="film" id="film" aria-labelledby="film-title">
+      <div class="film__pin">
+        <canvas class="film__canvas" aria-hidden="true"></canvas>
+        <div class="film__vignette" aria-hidden="true"></div>
+
+        <div class="film__stage">
+          <p class="sec-eyebrow film__eyebrow"><i class="dot"></i> Walk through the work</p>
+          <p class="film__sr">Scroll to walk through a completed home: entrance, lobby, kitchen and bedroom. A 3D walkthrough of our joinery.</p>
+
+          <div class="film__beats">
+            <article class="film__beat is-on" data-beat="0">
+              <span class="film__no">01 — Outside</span>
+              <h2 class="film__title" id="film-title">Step inside a finished project.</h2>
+              <p class="film__copy">Not renders from a catalogue. This is the sequence we build in — measured, drawn, lit and joined before a single sheet is cut.</p>
+            </article>
+            <article class="film__beat" data-beat="1">
+              <span class="film__no">02 — Lobby</span>
+              <h2 class="film__title">Panelled walls, light you cannot see.</h2>
+              <p class="film__copy">Fluted panels, concealed coves, a floor laid square to the front door. The first six feet of the house sets the tone.</p>
+            </article>
+            <article class="film__beat" data-beat="2">
+              <span class="film__no">03 — Kitchen</span>
+              <h2 class="film__title">Built around how you cook.</h2>
+              <p class="film__copy">Soft-close shutters, stone counter, an aisle that still fits two people at 7&nbsp;a.m.</p>
+            </article>
+            <article class="film__beat" data-beat="3">
+              <span class="film__no">04 — Bedroom</span>
+              <h2 class="film__title">A room that goes quiet.</h2>
+              <p class="film__copy">Veneer headboard to the ceiling, wardrobe hung flush, joinery detailed so the shadows fall where we put them.</p>
+            </article>
+          </div>
+
+          <div class="film__rail" aria-hidden="true"><span class="film__railfill"></span></div>
+          <ol class="film__dots" aria-hidden="true">
+            <li class="is-on"></li><li></li><li></li><li></li>
+          </ol>
+          <span class="film__hint" aria-hidden="true">Scroll to walk through<i></i></span>
+
+          <noscript><p class="film__noscript">A guided walkthrough of our work — enable JavaScript to view it.</p></noscript>
+        </div>
+
+        <div class="film__sizer" aria-hidden="true"></div>
+      <div class="film__fallback" aria-hidden="true" hidden>
+          <img src="./assets/img/living-2.jpg" alt="Lobby and living interior" loading="lazy" width="1400" height="952" />
+          <img src="./assets/img/kitchen-1.jpg" alt="Modular kitchen" loading="lazy" width="1400" height="738" />
+          <img src="./assets/img/bedroom-1.jpg" alt="Panelled bedroom" loading="lazy" width="1400" height="933" />
+          <img src="./assets/img/panel-1.jpg" alt="Wall panelling detail" loading="lazy" width="1400" height="1400" />
+        </div>
+      </div>
+    </section>
+
     <section class="stats">
       <div class="wrap stats__row">
         <div class="stat" data-reveal>
@@ -141,7 +197,7 @@
         <div class="work__track">
           <article class="piece">
             <div class="piece__media" data-tilt>
-              <img src="./assets/img/kitchen-1.jpg" alt="Matte modular kitchen with island" loading="lazy" />
+              <img src="./assets/img/kitchen-1.jpg" alt="Matte modular kitchen with island" loading="lazy" / width="1400" height="738" />
             </div>
             <div class="piece__body">
               <span class="piece__no">01</span>
@@ -152,7 +208,7 @@
           </article>
           <article class="piece">
             <div class="piece__media" data-tilt>
-              <img src="./assets/img/bedroom-1.jpg" alt="Wood panelled bedroom" loading="lazy" />
+              <img src="./assets/img/bedroom-1.jpg" alt="Wood panelled bedroom" loading="lazy" / width="1400" height="933" />
             </div>
             <div class="piece__body">
               <span class="piece__no">02</span>
@@ -163,7 +219,7 @@
           </article>
           <article class="piece">
             <div class="piece__media" data-tilt>
-              <img src="./assets/img/panel-1.jpg" alt="LCD and Italian wall panels" loading="lazy" />
+              <img src="./assets/img/panel-1.jpg" alt="LCD and Italian wall panels" loading="lazy" / width="1400" height="1400" />
             </div>
             <div class="piece__body">
               <span class="piece__no">03</span>
@@ -174,7 +230,7 @@
           </article>
           <article class="piece">
             <div class="piece__media" data-tilt>
-              <img src="./assets/img/wardrobe-1.jpg" alt="Walk-in wardrobe" loading="lazy" />
+              <img src="./assets/img/wardrobe-1.jpg" alt="Walk-in wardrobe" loading="lazy" / width="1400" height="933" />
             </div>
             <div class="piece__body">
               <span class="piece__no">04</span>
@@ -185,7 +241,7 @@
           </article>
           <article class="piece">
             <div class="piece__media" data-tilt>
-              <img src="./assets/img/ceiling-1.jpg" alt="Designer wooden false ceiling" loading="lazy" />
+              <img src="./assets/img/ceiling-1.jpg" alt="Designer wooden false ceiling" loading="lazy" / width="1400" height="788" />
             </div>
             <div class="piece__body">
               <span class="piece__no">05</span>
@@ -196,7 +252,7 @@
           </article>
           <article class="piece">
             <div class="piece__media" data-tilt>
-              <img src="./assets/img/office-1.jpg" alt="Home office joinery" loading="lazy" />
+              <img src="./assets/img/office-1.jpg" alt="Home office joinery" loading="lazy" / width="1400" height="935" />
             </div>
             <div class="piece__body">
               <span class="piece__no">06</span>
@@ -211,10 +267,10 @@
 
     <section class="parallax-band" aria-hidden="true">
       <div class="parallax-band__layer parallax-band__layer--far" data-parallax="0.06">
-        <img src="./assets/img/living-2.jpg" alt="" loading="lazy" />
+        <img src="./assets/img/living-2.jpg" alt="" loading="lazy" / width="1400" height="952" />
       </div>
       <div class="parallax-band__layer parallax-band__layer--near" data-parallax="0.2">
-        <img src="./assets/img/detail-2.jpg" alt="" loading="lazy" />
+        <img src="./assets/img/detail-2.jpg" alt="" loading="lazy" / width="1400" height="933" />
       </div>
     </section>
 
@@ -275,7 +331,7 @@
     <section class="section closing" id="materials">
       <div class="wrap closing__grid">
         <div class="closing__media" data-tilt>
-          <img src="./assets/img/shelf-1.jpg" alt="Joinery detail, solid timber shelving" loading="lazy" />
+          <img src="./assets/img/shelf-1.jpg" alt="Joinery detail, solid timber shelving" loading="lazy" / width="1400" height="2489" />
         </div>
         <div class="closing__text">
           <p class="sec-eyebrow" data-reveal><i class="dot"></i> Materials</p>
@@ -300,10 +356,10 @@
       <h2 class="footer__title" data-words>Bring us a floor plan, or just a room.</h2>
       <div class="footer__actions" data-reveal data-reveal-delay="200">
         <a class="btn magnetic" href="https://wa.me/918528795869" target="_blank" rel="noopener">
-          <img src="./assets/icons/whatsapp.png" alt="" />Chat on WhatsApp
+          <img src="./assets/icons/whatsapp.png" alt="" width="18" height="18" />Chat on WhatsApp
         </a>
         <a class="btn btn--ghost magnetic" href="tel:+919115834905">
-          <img src="./assets/icons/phone.png" alt="" />+91 91158 34905
+          <img src="./assets/icons/phone.png" alt="" width="18" height="18" />+91 91158 34905
         </a>
       </div>
 
@@ -314,8 +370,8 @@
         </div>
         <div>
           <h3>Write to us</h3>
-          <a href="mailto:vanshk605@gmail.com"><img src="./assets/icons/gmail.png" alt="" />vanshk605@gmail.com</a>
-          <a href="https://wa.me/918528795869" target="_blank" rel="noopener"><img src="./assets/icons/whatsapp.png" alt="" />+91 85287 95869</a>
+          <a href="mailto:vanshk605@gmail.com"><img src="./assets/icons/gmail.png" alt="" width="18" height="18" />vanshk605@gmail.com</a>
+          <a href="https://wa.me/918528795869" target="_blank" rel="noopener"><img src="./assets/icons/whatsapp.png" alt="" width="18" height="18" />+91 85287 95869</a>
         </div>
         <div>
           <h3>Collections</h3>
