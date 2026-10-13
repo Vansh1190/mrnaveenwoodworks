@@ -145,8 +145,9 @@ const frame = () => {
   if (filmScrollCb) filmScrollCb();
 
   if (nav) {
-    nav.classList.toggle('is-stuck', target > 40);
-    nav.classList.toggle('is-hidden', target > innerHeight * 1.2 && velocity > 2 && !menuOpen);
+    const bubble = target > 80 && !menuOpen;
+    nav.classList.toggle('is-bubble', bubble);
+    nav.classList.toggle('is-stuck', !bubble && target > 8);
   }
 
   requestAnimationFrame(frame);
